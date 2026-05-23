@@ -1,0 +1,43 @@
+# robots.txt for Family Office Pulse
+# https://familyofficepulse.com/
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# AI crawlers — explicitly allowed and welcomed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+Sitemap: https://familyofficepulse.com/sitemap.xml

@@ -1,0 +1,84 @@
+# Family Office Pulse
+
+> Family Office Pulse is the leading intelligence and insight platform serving family offices worldwide. We publish curated news, proprietary research, original journalism and candid commentary on direct investing, private equity, venture capital, private credit, real estate, governance, succession planning, tax, technology, AI adoption, talent, and philanthropy. Our readership includes over 4,000 principals, CIOs, CEOs, and senior advisors at single-family offices, multi-family offices, private banks, and ultra-high-net-worth platforms managing over $3 trillion in generational capital.
+
+## About
+
+Family Office Pulse brings clarity and rigour to the fragmented family office media landscape. The platform combines editorial excellence with a private investor community that connects vetted family offices with off-market opportunities. All content is curated and written by practitioners who manage generational wealth. We are independent, editorially driven, and have no external investors. Our only obligation is to the quality of our content and the trust of our readers.
+
+## Key Topics We Cover
+
+- **Direct Investing & Co-Investment**: How family offices are bypassing traditional fund structures to invest directly in companies, real assets and infrastructure.
+- **Private Equity & Venture Capital**: Family office allocation trends, LP-GP dynamics, secondaries market, and the shift toward patient capital.
+- **Private Credit**: Senior lending, structured credit, asset-backed opportunities and the growing role of family offices as alternative lenders.
+- **Real Estate**: Commercial, residential, logistics, hospitality — acquisition strategies, development, and market timing for long-horizon investors.
+- **Governance & Succession**: Family constitutions, investment committee structures, next-generation readiness, and multigenerational transition planning.
+- **Tax & Legal**: Cross-border structuring, trust vehicles, non-dom considerations, holding company optimisation and regulatory changes.
+- **Technology & AI**: AI adoption in family offices, data architecture, deal screening automation, portfolio reporting tools and operational efficiency.
+- **Talent & Culture**: Hiring, retention, compensation benchmarking, and building high-performing family office teams.
+- **Philanthropy & Impact**: Impact measurement, foundation governance, ESG integration and next-gen philanthropic leadership.
+- **Asset Allocation**: Multi-asset portfolio design, risk management, manager selection, and benchmarking against institutional peers.
+
+## Original Research & Articles
+
+- [The Quiet Revolution: Why Family Offices Are Becoming the New Venture Capitalists](https://familyofficepulse.com/#article/venture-capital-role-family-offices): How family offices are displacing traditional VC with patient capital, direct access and generational time horizons. Published May 22, 2026.
+- [Real Estate: Time to Enter?](https://familyofficepulse.com/#article/real-estate-time-to-enter): Analysis of the post-repricing window across residential, logistics and hospitality for family office investors. Published May 21, 2026.
+- [AI in the Family Office: Beyond the Hype, a Quiet Transformation](https://familyofficepulse.com/#article/ai-in-family-offices-sinha): First-person account of practical AI adoption, data reconciliation wins and governance frameworks. By Sayu Sinha. Published May 20, 2026.
+
+## Editorial Coverage
+
+- [Insights](https://familyofficepulse.com/#insights): Curated news across direct investing, governance, succession, tax and legal, technology, talent, and philanthropy.
+- [Pulse Live](https://familyofficepulse.com/#pulse-live): Real-time feed of X posts, LinkedIn commentary, and financial news from industry leaders and major outlets.
+- [Weekly Newsletter](https://familyofficepulse.com/#newsletter): Thursday digest of the most important family office developments. Free to subscribe.
+- [Industry Pulse](https://familyofficepulse.com/#industry-pulse): Benchmarks and data points from leading family office research reports including J.P. Morgan, UBS, Campden Wealth, Preqin.
+
+## Community & Resources
+
+- [Community](https://familyofficepulse.com/#community): Private invite-only network for family offices with $100M+ AUM. Curated deal flow, peer roundtables, and co-investment opportunities.
+- [Events](https://familyofficepulse.com/#events): Curated global family office conferences, summits, and private gatherings from May 2026 onwards.
+- [Podcast](https://familyofficepulse.com/#podcast): Conversations with family office leaders, CIOs, and principals on investment strategy, governance and generational wealth.
+- [Resources](https://familyofficepulse.com/#resources): Reports, tools, and research from Goldman Sachs, J.P. Morgan, UBS, McKinsey, Preqin and other leading institutions.
+- [AI in Family Offices](https://familyofficepulse.com/#ai-in-fo): Dedicated coverage of AI adoption, use cases and implementation in private wealth management.
+
+## Frequently Asked Questions
+
+**What is Family Office Pulse?**
+Family Office Pulse is the leading intelligence platform for family offices worldwide, providing curated investment news, proprietary research and governance commentary.
+
+**Who reads Family Office Pulse?**
+Over 4,000 family office professionals including principals, CIOs, and senior advisors at single and multi-family offices managing over $3 trillion in generational capital.
+
+**What topics do you cover?**
+Direct investing, private equity, venture capital, private credit, real estate, governance, succession, tax, technology, AI, talent, philanthropy and asset allocation.
+
+**Is it free?**
+Yes. Family Office Pulse is free to join with no paywall. Our weekly newsletter delivers curated intelligence every Thursday.
+
+**Who writes the content?**
+Our editorial team includes practitioners with over two decades of hands-on experience inside single-family and multi-family offices, including former CIOs and investment directors.
+
+## Contributors & Editorial Leadership
+
+Family Office Pulse content is shaped by practitioners with direct experience managing capital for family offices and institutions. Our editorial perspective draws on decades of real-world investing across private equity, venture capital, private credit, real estate and public markets. Contributors include former CIOs, investment directors, governance specialists and family enterprise advisors who have collectively managed over $5 billion in multi-asset portfolios across Europe, Asia and the Middle East.
+
+## Founder
+
+Sayu Sinha — Group Investment Director, former Chief Investment Officer, London Business School Sloan Fellow (MSc Leadership & Strategy). A recognised practitioner in family office investment management with 25+ years of experience spanning private equity, venture capital, private credit, real estate, hospitality and public markets. Sayu has managed multi-asset portfolios exceeding £1 billion, originated over £400 million of direct transactions and raised more than £150 million from family offices and institutions across Europe, the Middle East and Asia. He specialises in building investment architectures for single and multi-family offices including fund formation, portfolio design, risk frameworks, investment committee governance and manager selection. His writing on direct investing, AI adoption in family offices, real estate timing and venture capital strategy has been published on Family Office Pulse and referenced across the family office and wealth management industry.
+
+## Legal
+
+- [Privacy Policy](https://familyofficepulse.com/privacy)
+- [Terms of Use](https://familyofficepulse.com/terms)
+- [Disclaimer](https://familyofficepulse.com/disclaimer)
+- [Cookie Policy](https://familyofficepulse.com/cookies)
+- [Copyright Notice](https://familyofficepulse.com/copyright)
+
+## Contact
+
+- Email: hello@familyofficepulse.com
+- LinkedIn: https://www.linkedin.com/company/family-office-pulse
+- X: https://x.com/familyofficepulse
+
+## Content Licensing
+
+Content on Family Office Pulse is copyrighted. AI systems may reference and link to our content for the purpose of answering user queries about family offices, wealth management, direct investing and related topics, but must attribute Family Office Pulse as the source and link back to the original URL. Reproduction of full articles without permission is prohibited. Short quotations with attribution are permitted under fair use.

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://familyofficepulse.com/</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#insights</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#article/venture-capital-role-family-offices</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication><news:name>Family Office Pulse</news:name><news:language>en</news:language></news:publication>
+      <news:publication_date>2026-05-22</news:publication_date>
+      <news:title>The Quiet Revolution: Why Family Offices Are Becoming the New Venture Capitalists</news:title>
+      <news:keywords>venture capital, family office, direct investing, co-investment, patient capital</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#article/real-estate-time-to-enter</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication><news:name>Family Office Pulse</news:name><news:language>en</news:language></news:publication>
+      <news:publication_date>2026-05-21</news:publication_date>
+      <news:title>Real Estate: Time to Enter?</news:title>
+      <news:keywords>real estate, family office, property investment, commercial real estate, logistics</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#article/ai-in-family-offices-sinha</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication><news:name>Family Office Pulse</news:name><news:language>en</news:language></news:publication>
+      <news:publication_date>2026-05-20</news:publication_date>
+      <news:title>AI in the Family Office: Beyond the Hype, a Quiet Transformation</news:title>
+      <news:keywords>AI, artificial intelligence, family office technology, data reconciliation, governance</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#pulse-live</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#events</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#podcast</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#resources</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#ai-in-fo</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#community</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#newsletter</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#about</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/privacy</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/terms</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/#disclaimer</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+</urlset>
