@@ -30,6 +30,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="application-name" content="Family Office Pulse" />
     <meta name="apple-mobile-web-app-title" content="Family Office Pulse" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -801,8 +802,119 @@ function FopQuote() {
     return SLUG_TO_LABEL[seg] ? seg : 'home';
   }
 
+  /* Per-route descriptions (for <meta description> + og:description + twitter:description). */
+  var SLUG_TO_DESCRIPTION = {
+    'home': 'The leading family office intelligence platform. Curated investment news, direct deal insights, governance research and wealth management commentary for single-family offices, multi-family offices, CIOs and UHNW principals.',
+    'insights': 'Long-form analysis and research for family office principals — deep dives on investment strategy, governance, and the structural forces reshaping private wealth.',
+    'contribute': 'Submit research, thought pieces, or news tips to Family Office Pulse. We welcome contributions from family office principals, CIOs, advisors, and industry researchers.',
+    'ai-in-fo': 'How leading family offices are deploying AI across deal sourcing, portfolio management, and operations. Curated coverage of the technology shift reshaping private wealth.',
+    'podcast': 'The Family Office Pulse podcast — candid conversations with principals, CIOs, and investment leaders on the questions that actually matter to family offices.',
+    'resources': 'Tools, frameworks, and reference material for family office investment professionals — research libraries, governance templates, and industry benchmarks.',
+    'events': 'Upcoming family office conferences, summits, and networking events worldwide — curated for principals, CIOs, and family office investment professionals.',
+    'partnerships': 'Partnership opportunities with Family Office Pulse — sponsorships, research collaborations, and content syndication for institutions serving family offices.',
+    'community': 'The Family Office Pulse Investor Community — a peer network for principals, next-gens, and CIOs to share deal flow, governance insights, and best practices.',
+    'about': 'About Family Office Pulse — the leading intelligence platform for family offices worldwide, founded by Sayu Sinha (Group Investment Director, former CIO).',
+    'privacy': 'Privacy policy for familyofficepulse.com — how we collect, use, and protect data about our readers and community members.',
+    'terms': 'Terms of Use for Family Office Pulse — the rules and rights that govern your access to and use of our platform and content.',
+    'disclaimer': 'Disclaimer — Family Office Pulse provides general market commentary and educational content. Nothing on this platform constitutes investment advice.',
+    'cookies': 'Cookie policy for familyofficepulse.com — what cookies we use, why, and how you can control them.',
+    'copyright': 'Copyright notice and trademark information for Family Office Pulse content, branding, and intellectual property.'
+  };
+
+  /* Per-article descriptions (sourced from the article subtitles in the bundle). */
+  var ARTICLE_SLUG_TO_DESCRIPTION = {
+    'venture-capital-role-family-offices': 'As traditional VC faces a reckoning, family offices are stepping into the gap with patient capital, direct access and a generational time horizon. The implications for the startup ecosystem are profound.',
+    'real-estate-time-to-enter': 'After two years of repricing, falling valuations and frozen transactions, a window may be opening for family offices with the conviction and capital to act. But the opportunity is narrower than the headlines suggest.',
+    'ai-in-family-offices-sinha': 'The conversation about artificial intelligence in family offices has been dominated by buzzwords and vendor pitches. The reality on the ground is both more mundane and more consequential than the industry acknowledges.',
+    'family-office-ai-adoption': 'From deal sourcing to risk management, artificial intelligence is reshaping how the world\'s wealthiest families invest. We examine the strategies that are working — and the pitfalls that aren\'t discussed enough.',
+    'succession-planning-next-gen': 'A candid look at what works — and what fails — when transferring control to the next generation. Based on interviews with three families who\'ve navigated it.',
+    'direct-investments-2026': 'Co-investment and direct deal flow are accelerating. We break down the data, the drivers, and the risks that the optimists aren\'t discussing.',
+    'philanthropy-impact-measurement': 'Beyond ESG scores — how to build genuine accountability into philanthropic capital deployment without drowning in metrics.'
+  };
+
+  /* Helper: set a <meta> tag's content (creates the tag if missing). */
+  function setMeta(selector, content) {
+    if (content == null) return;
+    var el = document.querySelector(selector);
+    if (el) {
+      el.setAttribute('content', content);
+    }
+  }
+
+  /* Helper: set <link rel="canonical">. */
+  function setCanonical(href) {
+    var el = document.querySelector('link[rel="canonical"]');
+    if (el) el.setAttribute('href', href);
+  }
+
+  /* The all-in-one meta tag updater. Called whenever the route changes. */
+  function updateMetaTags(slug, articleSlug) {
+    var origin = window.location.origin;
+    var title, description, url, type, ogImage;
+
+    if (articleSlug) {
+      var articleTitle = ARTICLE_SLUG_TO_TITLE[articleSlug] || 'Article';
+      title = articleTitle + ' — Family Office Pulse';
+      description = ARTICLE_SLUG_TO_DESCRIPTION[articleSlug] || SLUG_TO_DESCRIPTION['home'];
+      url = origin + '/article/' + articleSlug;
+      type = 'article';
+      ogImage = origin + '/og-image.png';
+    } else {
+      title = SLUG_TO_TITLE[slug] || SLUG_TO_TITLE['home'];
+      description = SLUG_TO_DESCRIPTION[slug] || SLUG_TO_DESCRIPTION['home'];
+      url = origin + (slug === 'home' ? '/' : '/' + slug);
+      type = 'website';
+      ogImage = origin + '/og-image.png';
+    }
+
+    document.title = title;
+    setMeta('meta[name="description"]', description);
+    setCanonical(url);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:url"]', url);
+    setMeta('meta[property="og:type"]', type);
+    setMeta('meta[property="og:image"]', ogImage);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
+    setMeta('meta[name="twitter:image"]', ogImage);
+  }
+
   function setTitle(slug) {
-    document.title = SLUG_TO_TITLE[slug] || SLUG_TO_TITLE['home'];
+    /* Backwards-compatible alias — now delegates to the full meta updater. */
+    updateMetaTags(slug);
+  }
+
+  /* Loading overlay shown during direct-visit article navigation
+     (replaces the jarring home → insights → article flash). */
+  function showLoadingOverlay() {
+    if (document.getElementById('fop-loading-overlay')) return;
+    var style = document.createElement('style');
+    style.id = 'fop-loading-overlay-style';
+    style.textContent =
+      '#fop-loading-overlay{position:fixed;inset:0;background:#0b1221;z-index:2147483647;' +
+      'display:flex;align-items:center;justify-content:center;animation:fop-fade-in .15s ease-out}' +
+      '#fop-loading-overlay > div{width:84px;height:84px;border-radius:14px;border:2px solid #c5a572;' +
+      'display:flex;align-items:center;justify-content:center;font-family:Georgia,"Times New Roman",serif;' +
+      'font-weight:700;color:#c5a572;font-size:36px;animation:fop-pulse 1.4s ease-in-out infinite}' +
+      '@keyframes fop-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.96)}}' +
+      '@keyframes fop-fade-in{from{opacity:0}to{opacity:1}}' +
+      '@keyframes fop-fade-out{from{opacity:1}to{opacity:0}}';
+    document.head.appendChild(style);
+    var overlay = document.createElement('div');
+    overlay.id = 'fop-loading-overlay';
+    overlay.innerHTML = '<div>FO</div>';
+    document.body.appendChild(overlay);
+  }
+  function hideLoadingOverlay() {
+    var ov = document.getElementById('fop-loading-overlay');
+    if (!ov) return;
+    ov.style.animation = 'fop-fade-out .2s ease-out';
+    setTimeout(function () {
+      if (ov.parentNode) ov.parentNode.removeChild(ov);
+      var s = document.getElementById('fop-loading-overlay-style');
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+    }, 200);
   }
 
   function buttonText(el) {
@@ -911,7 +1023,7 @@ function FopQuote() {
         var target = '/article/' + slug;
         if (window.location.pathname !== target) {
           window.history.pushState({ article: slug }, '', target);
-          document.title = t + ' — Family Office Pulse';
+          updateMetaTags(null, slug);
           lastSyncedSlug = 'article/' + slug;
         }
         return true;
@@ -1001,12 +1113,14 @@ function FopQuote() {
       var articleSlug = slug.slice(8);
       var articleTitle = ARTICLE_SLUG_TO_TITLE[articleSlug];
       if (!articleTitle) { lastSyncedSlug = 'home'; return; }
-      document.title = articleTitle + ' — Family Office Pulse';
+      updateMetaTags(null, articleSlug);
+      /* Flash-prevention: hide body during the brief redirect dance */
+      showLoadingOverlay();
       /* First navigate to Insights so article cards are visible, then click the matching card. */
       var navAttempts = 0;
       var navIv = setInterval(function () {
         navAttempts++;
-        if (navAttempts > 80) { clearInterval(navIv); return; }
+        if (navAttempts > 80) { clearInterval(navIv); hideLoadingOverlay(); return; }
         var insightsBtn = findNavElement('Insights');
         if (insightsBtn) {
           clearInterval(navIv);
@@ -1015,18 +1129,19 @@ function FopQuote() {
           var cardAttempts = 0;
           var cardIv = setInterval(function () {
             cardAttempts++;
-            if (cardAttempts > 80) { clearInterval(cardIv); return; }
+            if (cardAttempts > 80) { clearInterval(cardIv); hideLoadingOverlay(); return; }
             var card = findArticleCard(articleTitle);
             if (card) {
               clearInterval(cardIv);
               clickProgrammatically(card);
               lastSyncedSlug = 'article/' + articleSlug;
-              /* Restore URL because the click sequence may have changed it. */
+              /* Restore URL + drop the loading overlay once the article has rendered. */
               setTimeout(function () {
                 if (window.location.pathname !== '/article/' + articleSlug) {
                   window.history.replaceState({ article: articleSlug }, '', '/article/' + articleSlug);
                 }
-              }, 300);
+                hideLoadingOverlay();
+              }, 350);
             }
           }, 100);
         }
@@ -1053,6 +1168,59 @@ function FopQuote() {
   } else {
     setTimeout(tryInitialNav, 100);
   }
+
+  /* ------------------------------------------------------------------
+     Accessibility patches — run after React mounts, then on every nav.
+     ------------------------------------------------------------------ */
+  function injectSkipLink() {
+    if (document.getElementById('fop-skip-link')) return;
+    var style = document.createElement('style');
+    style.textContent =
+      '#fop-skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:2147483646}' +
+      '#fop-skip-link:focus{position:fixed;left:1rem;top:1rem;width:auto;height:auto;padding:.75rem 1.25rem;' +
+      'background:#c5a572;color:#0b1221;font-family:sans-serif;font-weight:600;border-radius:6px;' +
+      'box-shadow:0 8px 24px rgba(0,0,0,.4);text-decoration:none;outline:2px solid #fafafa;outline-offset:2px}';
+    document.head.appendChild(style);
+    var link = document.createElement('a');
+    link.id = 'fop-skip-link';
+    link.href = '#fop-main-content';
+    link.textContent = 'Skip to main content';
+    document.body.insertBefore(link, document.body.firstChild);
+    /* Tag the main content region so the skip link has somewhere to jump to */
+    var main = document.querySelector('main') || document.querySelector('[role="main"]') ||
+               document.querySelector('#root > div > div') || document.querySelector('#root');
+    if (main && !main.id) main.id = 'fop-main-content';
+  }
+
+  function patchAriaLabels() {
+    /* Add aria-label to nav elements based on their text content */
+    var navEls = document.querySelectorAll('button, a');
+    for (var i = 0; i < navEls.length; i++) {
+      var el = navEls[i];
+      if (el.hasAttribute('aria-label')) continue;
+      var t = buttonText(el);
+      if (LABEL_TO_SLUG[t] || t === 'Family Office Pulse') {
+        el.setAttribute('aria-label', t === 'Family Office Pulse' ? 'Family Office Pulse — home' : 'Navigate to ' + t);
+      }
+    }
+    /* Ensure all images have alt text — fall back to nearby heading or empty alt (decorative) */
+    var imgs = document.querySelectorAll('img:not([alt])');
+    for (var j = 0; j < imgs.length; j++) {
+      var img = imgs[j];
+      var nearbyH = img.closest('article, section, div');
+      var heading = nearbyH ? nearbyH.querySelector('h1, h2, h3') : null;
+      img.setAttribute('alt', heading ? (heading.textContent || '').trim().slice(0, 100) : '');
+    }
+  }
+
+  function runA11yPatches() {
+    injectSkipLink();
+    patchAriaLabels();
+  }
+  /* Run a11y patches shortly after mount, then on every URL change (React re-renders may add new buttons) */
+  setTimeout(runA11yPatches, 800);
+  setTimeout(runA11yPatches, 2000);
+  document.addEventListener('click', function () { setTimeout(runA11yPatches, 400); }, false);
 })();
 </script>
 </body>
