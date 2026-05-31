@@ -764,9 +764,29 @@ function FopQuote() {
     'copyright': 'Copyright — Family Office Pulse'
   };
 
+  /* Article title → slug map (full content articles in the bundle).
+     When any of these titles appears as a visible H1, we know an article view is open
+     and we update the URL to /article/<slug>. */
+  var ARTICLE_TITLE_TO_SLUG = {
+    'The Quiet Revolution: Why Family Offices Are Becoming the New Venture Capitalists': 'venture-capital-role-family-offices',
+    'Real Estate: Time to Enter?': 'real-estate-time-to-enter',
+    'AI in the Family Office: Beyond the Hype, a Quiet Transformation': 'ai-in-family-offices-sinha',
+    'How Leading Family Offices Are Deploying AI Across Their Portfolios': 'family-office-ai-adoption',
+    'The Next-Gen Succession Playbook: Lessons from Three Multigenerational Families': 'succession-planning-next-gen',
+    'Direct Investing in 2026: Why Family Offices Are Bypassing Funds': 'direct-investments-2026',
+    'Measuring What Matters: Impact Frameworks for Family Foundations': 'philanthropy-impact-measurement'
+  };
+  var ARTICLE_SLUG_TO_TITLE = {};
+  for (var __t in ARTICLE_TITLE_TO_SLUG) {
+    ARTICLE_SLUG_TO_TITLE[ARTICLE_TITLE_TO_SLUG[__t]] = __t;
+  }
+
   function currentSlug() {
     var p = window.location.pathname.replace(/^\/|\/$/g, '');
-    var seg = (p.split('/')[0] || '').toLowerCase();
+    var parts = p.split('/');
+    var seg = (parts[0] || '').toLowerCase();
+    /* Article paths take the form /article/<slug> — return them as a special string. */
+    if (seg === 'article' && parts[1]) return 'article/' + parts[1];
     return SLUG_TO_LABEL[seg] ? seg : 'home';
   }
 
@@ -844,13 +864,118 @@ function FopQuote() {
     }
   }, true);
 
+  /* Article detection: after any click, wait for React to re-render, then check the
+     top H1. If it matches a known article title, update URL to /article/<slug>. */
+  function detectAndSyncArticle() {
+    var h1s = document.querySelectorAll('h1');
+    for (var i = 0; i < h1s.length; i++) {
+      var t = (h1s[i].textContent || '').replace(/\s+/g, ' ').trim();
+      var slug = ARTICLE_TITLE_TO_SLUG[t];
+      if (slug) {
+        var target = '/article/' + slug;
+        if (window.location.pathname !== target) {
+          window.history.pushState({ article: slug }, '', target);
+          document.title = t + ' — Family Office Pulse';
+          lastSyncedSlug = 'article/' + slug;
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+  document.addEventListener('click', function () {
+    if (programmaticClickInFlight) return;
+    /* Two checks: 200ms (typical React render) and 600ms (slower navigations). */
+    setTimeout(detectAndSyncArticle, 200);
+    setTimeout(detectAndSyncArticle, 600);
+  }, false);
+
+  /* Find an article card by its title text. Used for direct visits to /article/<slug>. */
+  function findArticleCard(title) {
+    var els = document.querySelectorAll('h2, h3, button, a');
+    for (var i = 0; i < els.length; i++) {
+      var t = (els[i].textContent || '').replace(/\s+/g, ' ').trim();
+      if (t === title) {
+        /* If the matched element isn't itself clickable, walk up to find the clickable ancestor. */
+        var node = els[i];
+        while (node && node !== document.body) {
+          if (node.tagName === 'BUTTON' || node.tagName === 'A' || node.onclick) return node;
+          node = node.parentElement;
+        }
+        return els[i];
+      }
+    }
+    return null;
+  }
+
   window.addEventListener('popstate', function () {
     var slug = currentSlug();
-    if (slug !== lastSyncedSlug) navigateToSlug(slug);
+    if (slug !== lastSyncedSlug) {
+      if (slug.indexOf('article/') === 0) {
+        /* Going back/forward to an article URL — best-effort: navigate to Insights then click the card. */
+        var articleSlug = slug.slice(8);
+        var articleTitle = ARTICLE_SLUG_TO_TITLE[articleSlug];
+        if (articleTitle) {
+          var card = findArticleCard(articleTitle);
+          if (card) {
+            clickProgrammatically(card);
+            lastSyncedSlug = slug;
+          } else {
+            /* No card visible — navigate to insights first, then try. */
+            navigateToSlug('insights');
+            setTimeout(function () {
+              var c = findArticleCard(articleTitle);
+              if (c) clickProgrammatically(c);
+              lastSyncedSlug = slug;
+            }, 400);
+          }
+        }
+      } else {
+        navigateToSlug(slug);
+      }
+    }
   });
 
   function tryInitialNav() {
     var slug = currentSlug();
+    /* Article URL case: /article/<slug> */
+    if (slug.indexOf('article/') === 0) {
+      var articleSlug = slug.slice(8);
+      var articleTitle = ARTICLE_SLUG_TO_TITLE[articleSlug];
+      if (!articleTitle) { lastSyncedSlug = 'home'; return; }
+      document.title = articleTitle + ' — Family Office Pulse';
+      /* First navigate to Insights so article cards are visible, then click the matching card. */
+      var navAttempts = 0;
+      var navIv = setInterval(function () {
+        navAttempts++;
+        if (navAttempts > 80) { clearInterval(navIv); return; }
+        var insightsBtn = findNavElement('Insights');
+        if (insightsBtn) {
+          clearInterval(navIv);
+          clickProgrammatically(insightsBtn);
+          /* Now wait for the article card to appear, then click it. */
+          var cardAttempts = 0;
+          var cardIv = setInterval(function () {
+            cardAttempts++;
+            if (cardAttempts > 80) { clearInterval(cardIv); return; }
+            var card = findArticleCard(articleTitle);
+            if (card) {
+              clearInterval(cardIv);
+              clickProgrammatically(card);
+              lastSyncedSlug = 'article/' + articleSlug;
+              /* Restore URL because the click sequence may have changed it. */
+              setTimeout(function () {
+                if (window.location.pathname !== '/article/' + articleSlug) {
+                  window.history.replaceState({ article: articleSlug }, '', '/article/' + articleSlug);
+                }
+              }, 300);
+            }
+          }, 100);
+        }
+      }, 100);
+      return;
+    }
+    /* Regular page case */
     setTitle(slug);
     if (slug === 'home') { lastSyncedSlug = 'home'; return; }
     var attempts = 0;

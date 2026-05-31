@@ -145,5 +145,65 @@
       <news:keywords>AI, artificial intelligence, family office technology, data reconciliation, governance</news:keywords>
     </news:news>
   </url>
+  <url>
+    <loc>https://familyofficepulse.com/article/family-office-ai-adoption</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Family Office Pulse</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-20</news:publication_date>
+      <news:title>How Leading Family Offices Are Deploying AI Across Their Portfolios</news:title>
+      <news:keywords>AI, artificial intelligence, family office technology, portfolio management, deal sourcing, risk management</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/article/succession-planning-next-gen</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Family Office Pulse</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-15</news:publication_date>
+      <news:title>The Next-Gen Succession Playbook: Lessons from Three Multigenerational Families</news:title>
+      <news:keywords>succession planning, next generation, family governance, wealth transfer, multigenerational families</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/article/direct-investments-2026</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Family Office Pulse</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-10</news:publication_date>
+      <news:title>Direct Investing in 2026: Why Family Offices Are Bypassing Funds</news:title>
+      <news:keywords>direct investing, co-investment, family office, private equity, deal flow, fund alternatives</news:keywords>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://familyofficepulse.com/article/philanthropy-impact-measurement</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Family Office Pulse</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-05</news:publication_date>
+      <news:title>Measuring What Matters: Impact Frameworks for Family Foundations</news:title>
+      <news:keywords>philanthropy, impact investing, family foundations, ESG, impact measurement, charitable giving</news:keywords>
+    </news:news>
+  </url>
 
 </urlset>
