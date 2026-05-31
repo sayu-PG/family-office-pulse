@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+    <!-- spa-github-pages path restore: pairs with 404.html. Runs BEFORE React loads. -->
+    <script>
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
+
     <!-- Primary Meta -->
     <title>Family Office Pulse — Family Office News, Research & Investment Intelligence for UHNW Wealth</title>
     <meta name="description" content="The leading family office intelligence platform. Curated news, investment research, direct deal insights, governance guidance and wealth management commentary for single-family offices, multi-family offices, CIOs and UHNW principals. Trusted by 4,000+ family office professionals managing over $3 trillion in generational capital." />
@@ -690,6 +702,175 @@ function FopQuote() {
     {"@type": "DefinedTerm", "name": "Generational Wealth Transfer", "description": "The process of transferring assets, governance structures and investment philosophies from one generation to the next within wealthy families."}
   ]
 }
+</script>
+<script>
+/* Family Office Pulse — URL routing shim (post-build patch).
+   Bridges the existing React state-based navigation with shareable URLs.
+   - Clicks on known nav labels push a clean URL like /events
+   - Direct visits to /events programmatically click the matching button after React mounts
+   - Browser back/forward (popstate) syncs both directions
+   - Pairs with 404.html + the path-restore <script> in <head> for GitHub Pages clean URLs */
+(function () {
+  'use strict';
+  var LABEL_TO_SLUG = {
+    'Insights': 'insights',
+    'Contribute': 'contribute',
+    'AI in FO': 'ai-in-fo',
+    'AI in Family Offices': 'ai-in-fo',
+    'Podcast': 'podcast',
+    'Resources': 'resources',
+    'Events': 'events',
+    'Partnerships': 'partnerships',
+    'Investor Community': 'community',
+    'Community': 'community',
+    'About': 'about',
+    'Privacy Policy': 'privacy',
+    'Terms of Use': 'terms',
+    'Disclaimer': 'disclaimer',
+    'Cookie Policy': 'cookies',
+    'Copyright': 'copyright'
+  };
+  var SLUG_TO_LABEL = {
+    'insights': 'Insights',
+    'contribute': 'Contribute',
+    'ai-in-fo': 'AI in FO',
+    'podcast': 'Podcast',
+    'resources': 'Resources',
+    'events': 'Events',
+    'partnerships': 'Partnerships',
+    'community': 'Investor Community',
+    'about': 'About',
+    'privacy': 'Privacy Policy',
+    'terms': 'Terms of Use',
+    'disclaimer': 'Disclaimer',
+    'cookies': 'Cookie Policy',
+    'copyright': 'Copyright'
+  };
+  var SLUG_TO_TITLE = {
+    'home': 'Family Office Pulse — Family Office News, Research & Investment Intelligence',
+    'insights': 'Insights — Family Office Pulse',
+    'contribute': 'Contribute — Family Office Pulse',
+    'ai-in-fo': 'AI in Family Offices — Family Office Pulse',
+    'podcast': 'Podcast — Family Office Pulse',
+    'resources': 'Resources — Family Office Pulse',
+    'events': 'Events — Family Office Pulse',
+    'partnerships': 'Partnerships — Family Office Pulse',
+    'community': 'Investor Community — Family Office Pulse',
+    'about': 'About — Family Office Pulse',
+    'privacy': 'Privacy Policy — Family Office Pulse',
+    'terms': 'Terms of Use — Family Office Pulse',
+    'disclaimer': 'Disclaimer — Family Office Pulse',
+    'cookies': 'Cookie Policy — Family Office Pulse',
+    'copyright': 'Copyright — Family Office Pulse'
+  };
+
+  function currentSlug() {
+    var p = window.location.pathname.replace(/^\/|\/$/g, '');
+    var seg = (p.split('/')[0] || '').toLowerCase();
+    return SLUG_TO_LABEL[seg] ? seg : 'home';
+  }
+
+  function setTitle(slug) {
+    document.title = SLUG_TO_TITLE[slug] || SLUG_TO_TITLE['home'];
+  }
+
+  function buttonText(el) {
+    return (el.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function findNavElement(label) {
+    var els = document.querySelectorAll('button, a');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el.querySelector && el.querySelector('svg')) continue;
+      if (buttonText(el) === label) return el;
+    }
+    for (var j = 0; j < els.length; j++) {
+      if (buttonText(els[j]) === label) return els[j];
+    }
+    return null;
+  }
+
+  var lastSyncedSlug = null;
+  var programmaticClickInFlight = false;
+
+  function clickProgrammatically(el) {
+    if (!el) return false;
+    programmaticClickInFlight = true;
+    try { el.click(); }
+    finally { setTimeout(function () { programmaticClickInFlight = false; }, 60); }
+    return true;
+  }
+
+  function navigateToSlug(slug) {
+    setTitle(slug);
+    if (slug === 'home') {
+      var brand = findNavElement('Family Office Pulse');
+      if (brand) clickProgrammatically(brand);
+      lastSyncedSlug = 'home';
+      return;
+    }
+    var label = SLUG_TO_LABEL[slug];
+    if (!label) return;
+    var btn = findNavElement(label);
+    if (btn) {
+      clickProgrammatically(btn);
+      lastSyncedSlug = slug;
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    if (programmaticClickInFlight) return;
+    var el = e.target && e.target.closest ? e.target.closest('button, a') : null;
+    if (!el) return;
+    /* Don't skip on SVG presence — top nav buttons have a chevron icon AND navigate.
+       The text-match below is sufficient discrimination: only known nav labels trigger URL updates. */
+    var t = buttonText(el);
+    if (t === 'Family Office Pulse') {
+      if (window.location.pathname !== '/') {
+        window.history.pushState({ slug: 'home' }, '', '/');
+        lastSyncedSlug = 'home';
+        setTitle('home');
+      }
+      return;
+    }
+    var slug = LABEL_TO_SLUG[t];
+    if (!slug) return;
+    var target = '/' + slug;
+    if (window.location.pathname !== target) {
+      window.history.pushState({ slug: slug }, '', target);
+      lastSyncedSlug = slug;
+      setTitle(slug);
+    }
+  }, true);
+
+  window.addEventListener('popstate', function () {
+    var slug = currentSlug();
+    if (slug !== lastSyncedSlug) navigateToSlug(slug);
+  });
+
+  function tryInitialNav() {
+    var slug = currentSlug();
+    setTitle(slug);
+    if (slug === 'home') { lastSyncedSlug = 'home'; return; }
+    var attempts = 0;
+    var iv = setInterval(function () {
+      attempts++;
+      if (attempts > 80) { clearInterval(iv); return; }
+      var btn = findNavElement(SLUG_TO_LABEL[slug]);
+      if (btn) {
+        clearInterval(iv);
+        navigateToSlug(slug);
+      }
+    }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInitialNav);
+  } else {
+    setTimeout(tryInitialNav, 100);
+  }
+})();
 </script>
 </body>
 </html>

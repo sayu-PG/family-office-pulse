@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <title>Family Office Pulse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- spa-github-pages 404 redirect.
+       Catches direct visits to URLs GitHub Pages doesn't know about (e.g. /events)
+       and bounces them to /?/events so the path-restore script in index.html
+       can rewrite the URL back to /events client-side, then the routing shim
+       finds the right nav button and clicks it. -->
+  <script>
+    var pathSegmentsToKeep = 0;
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+<body>
+  <p>Loading <a href="/">familyofficepulse.com</a>&hellip;</p>
+</body>
+</html>
