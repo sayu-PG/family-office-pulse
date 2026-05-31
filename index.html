@@ -25,6 +25,17 @@
     <meta name="theme-color" content="#0b1221" />
     <link rel="canonical" href="https://familyofficepulse.com/" />
 
+    <!-- Favicons + app icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="application-name" content="Family Office Pulse" />
+    <meta name="apple-mobile-web-app-title" content="Family Office Pulse" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://familyofficepulse.com/" />
@@ -344,11 +355,11 @@ ${dl}`)}`}];function tj(){const s=c=>{c.action==="copy"?navigator.clipboard?.wri
     </div>
   
 <script>
-var FOP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"secondFeaturedImage": "uploads/FPO%20Family.png", "quoteText": "The stock market is a device for transferring money from the impatient to the patient.", "quoteAuthor": "Warren Buffett", "quoteRole": "Chairman & CEO, Berkshire Hathaway", "quoteLink": "https://www.berkshirehathaway.com/letters/letters.html", "quoteLinkLabel": "Read the Berkshire Letters"}/*EDITMODE-END*/;
+var FOP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"secondFeaturedImage": "uploads/FPO%20Family.jpg", "quoteText": "The stock market is a device for transferring money from the impatient to the patient.", "quoteAuthor": "Warren Buffett", "quoteRole": "Chairman & CEO, Berkshire Hathaway", "quoteLink": "https://www.berkshirehathaway.com/letters/letters.html", "quoteLinkLabel": "Read the Berkshire Letters"}/*EDITMODE-END*/;
 </script>
 <script>
 (function(){
-  var _img2=(window.FOP_TWEAK_DEFAULTS&&window.FOP_TWEAK_DEFAULTS.secondFeaturedImage)||"uploads/FPO%20Family.png";
+  var _img2=(window.FOP_TWEAK_DEFAULTS&&window.FOP_TWEAK_DEFAULTS.secondFeaturedImage)||"uploads/FPO%20Family.jpg";
   var tries=0;
   var done=false;
   var iv=setInterval(function(){
@@ -799,14 +810,32 @@ function FopQuote() {
   }
 
   function findNavElement(label) {
-    var els = document.querySelectorAll('button, a');
-    for (var i = 0; i < els.length; i++) {
-      var el = els[i];
+    /* Pass 1: native interactive elements, no SVG child (footer-style nav buttons) */
+    var clickables = document.querySelectorAll('button, a, [role="button"], [role="link"]');
+    for (var i = 0; i < clickables.length; i++) {
+      var el = clickables[i];
       if (el.querySelector && el.querySelector('svg')) continue;
       if (buttonText(el) === label) return el;
     }
-    for (var j = 0; j < els.length; j++) {
-      if (buttonText(els[j]) === label) return els[j];
+    /* Pass 2: native interactive elements, allow SVG (top-nav with chevron, brand with logo) */
+    for (var j = 0; j < clickables.length; j++) {
+      if (buttonText(clickables[j]) === label) return clickables[j];
+    }
+    /* Pass 3: walk up from a text node to find the nearest clickable ancestor
+       (handles brand logos that are <div> with React onClick) */
+    var textHolders = document.querySelectorAll('h1, h2, h3, span, p');
+    for (var k = 0; k < textHolders.length; k++) {
+      if (buttonText(textHolders[k]) === label) {
+        var node = textHolders[k];
+        while (node && node !== document.body) {
+          var tag = node.tagName;
+          if (tag === 'BUTTON' || tag === 'A' || node.getAttribute('role') === 'button') return node;
+          /* Heuristic: cursor:pointer style suggests clickable */
+          if (window.getComputedStyle && window.getComputedStyle(node).cursor === 'pointer') return node;
+          node = node.parentElement;
+        }
+        return textHolders[k]; /* fallback to the text element itself */
+      }
     }
     return null;
   }
@@ -817,8 +846,15 @@ function FopQuote() {
   function clickProgrammatically(el) {
     if (!el) return false;
     programmaticClickInFlight = true;
-    try { el.click(); }
-    finally { setTimeout(function () { programmaticClickInFlight = false; }, 60); }
+    try {
+      /* Native click for button/a — fires native + delegated React handlers */
+      if (typeof el.click === 'function') el.click();
+      /* Synthetic dispatched click — covers div/span with React onClick (event delegation) */
+      var ev = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+      el.dispatchEvent(ev);
+    } finally {
+      setTimeout(function () { programmaticClickInFlight = false; }, 60);
+    }
     return true;
   }
 
@@ -911,6 +947,28 @@ function FopQuote() {
   window.addEventListener('popstate', function () {
     var slug = currentSlug();
     if (slug !== lastSyncedSlug) {
+      if (slug === 'home') {
+        /* Going BACK to home — try brand click first, fall back to full reload
+           if React state can't be reached (guaranteed-correct UX even if slightly slower) */
+        var brand = findNavElement('Family Office Pulse');
+        if (brand) {
+          clickProgrammatically(brand);
+          /* Verify after 400ms that we're actually on home — if not, hard reload */
+          setTimeout(function () {
+            var firstH1 = document.querySelector('h1');
+            var firstH1Text = firstH1 ? (firstH1.textContent || '').trim() : '';
+            /* If h1 still looks like a sub-page heading, force a reload */
+            if (firstH1Text && ARTICLE_TITLE_TO_SLUG[firstH1Text]) {
+              window.location.reload();
+            }
+          }, 400);
+        } else {
+          window.location.reload();
+        }
+        lastSyncedSlug = 'home';
+        setTitle('home');
+        return;
+      }
       if (slug.indexOf('article/') === 0) {
         /* Going back/forward to an article URL — best-effort: navigate to Insights then click the card. */
         var articleSlug = slug.slice(8);
